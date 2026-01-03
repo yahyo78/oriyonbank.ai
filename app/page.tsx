@@ -6,6 +6,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import img2 from "../public/auto_4x_2291718894.webp"
 import img3 from "../public/mt_4x_92d419464f.webp"
 import "swiper/css";
+import Link from "next/link";
 export default function Home() {
   return (
     <>
@@ -40,6 +41,9 @@ export default function Home() {
           <button className="w-40 h-11 bg-amber-300 cursor-pointer rounded-[15px]">
             Ориён Бизнес
           </button>
+          <Link href={"/steps"}>
+          step
+          </Link>
         </div>
       </div>
       <div className="w-[77%] m-auto mt-10 shadow-md shadow-gray-300 rounded-[22px]">
