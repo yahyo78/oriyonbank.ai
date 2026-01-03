@@ -1,46 +1,17 @@
-"use client"
+"use client";
 import Image from "next/image";
 import img1 from "../public/logo.a6a2c873.svg";
 import { BookMarked, MailCheck, MapPin } from "lucide-react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import img2 from "../public/auto_4x_2291718894.webp"
-import img3 from "../public/mt_4x_92d419464f.webp"
+import img2 from "../public/auto_4x_2291718894.webp";
+import img3 from "../public/mt_4x_92d419464f.webp";
 import "swiper/css";
+import Navbar from "@/components/navbar";
 export default function Home() {
   return (
     <>
-      <div className="w-[100%] shadow-md shadow-gray-200">
-        <div className="flex gap-7 ml-[750px] mt-2">
-          <div className="flex gap-2">
-            <BookMarked size={16} color="#747272" className="mt-[2px] ml-2" />
-            <p className="text-[#747272] hover:text-amber-400 cursor-pointer text-[15px]">
-              Ҳуқуқҳои муштариён
-            </p>
-          </div>
-          <div className="flex gap-2">
-            <MailCheck size={16} color="#747272" className="mt-[2px] ml-2" />
-            <p className="text-[#747272] hover:text-amber-400 cursor-pointer text-[15px]">
-              Қабули шикоятҳо
-            </p>
-          </div>
-          <div className="flex gap-2">
-            <MapPin size={16} color="#747272" className="mt-[2px] ml-2" />
-            <p className="text-[#747272] hover:text-amber-400 cursor-pointer text-[15px]">
-              Офисҳо ва банкоматҳо
-            </p>
-          </div>
-        </div>
-        <hr className="w-[100%] border-[1px] border-solid border-gray-200 mt-3" />
-        <div className="flex justify-center gap-20 mt-5 pb-4">
-          <Image className="cursor-pointer" src={img1} alt="" />
-          <p className="pt-3 text-[15px]">Барои шахсони воқеӣ</p>
-          <p className="pt-3 text-[15px]">Барои тиҷорат</p>
-          <p className="pt-3 text-[15px]">Дар бораи бонк</p>
-          <p className="pt-3 text-[15px]">Бештар</p>
-          <button className="w-40 h-11 bg-amber-300 cursor-pointer rounded-[15px]">
-            Ориён Бизнес
-          </button>
-        </div>
+      <div>
+        <Navbar />
       </div>
       <div className="w-[77%] m-auto mt-10 shadow-md shadow-gray-300 rounded-[22px]">
         <Swiper
@@ -94,7 +65,6 @@ export default function Home() {
               РМА: 020003038, РЯМ: 350101369
             </p>
             <p className="text-gray-700">
-              
               Почтаи электронӣ:{" "}
               <a
                 href="mailto:info@Oriyonbonk.tj"
@@ -105,7 +75,6 @@ export default function Home() {
             </p>
           </div>
 
-          
           <div className="flex-1 text-gray-500">
             <p className="font-semibold text-2xl mb-2 text-black">2222</p>
             <p className="mb-2">Барои зангҳо дар дохили Тоҷикистон</p>
@@ -114,7 +83,9 @@ export default function Home() {
               +992 44 610 22 00
             </p>
             <p className="mb-2">Барои зангҳо аз ҳар гӯшаи ҷаҳон</p>
-            <p className="mb-2 text-2xl text-black font-semibold">+992 44 600 15 20</p>
+            <p className="mb-2 text-2xl text-black font-semibold">
+              +992 44 600 15 20
+            </p>
             <p>Телефони боварии Бонки миллии Тоҷикистон</p>
           </div>
 
