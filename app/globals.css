@@ -25,15 +25,13 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-/* Remove white background from robot image */
-.robot-no-bg {
-  mix-blend-mode: multiply;
-  filter: contrast(1.1) brightness(1.05);
-}
-
-@media (prefers-color-scheme: dark) {
-  .robot-no-bg {
-    mix-blend-mode: screen;
-    filter: contrast(1.1) brightness(0.95);
+@keyframes typing-dot {
+  0%, 60%, 100% {
+    transform: translateY(0);
+    opacity: 0.7;
+  }
+  30% {
+    transform: translateY(-10px);
+    opacity: 1;
   }
 }
