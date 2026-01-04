@@ -7,6 +7,7 @@ import img2 from "../public/auto_4x_2291718894.webp";
 import img3 from "../public/mt_4x_92d419464f.webp";
 import "swiper/css";
 import Navbar from "@/components/navbar";
+import Link from "next/link";
 export default function Home() {
   return (
     <>
@@ -29,32 +30,34 @@ export default function Home() {
                   Автоқарз қарзест, ки ниёзи Шуморо ба воситаи нақлиёт таъмин
                   менамояд
                 </p>
-                <button className="w-25 h-13 bg-amber-300 rounded-[12px]">
-                  Бештар
-                </button>
-              </div>
+                <Link href="/chat">
+                  <button className="w-25 h-13 bg-amber-300 rounded-[12px]">
+                    Бештар
+                  </button>
+                </Link>
             </div>
-          </SwiperSlide>
-          <SwiperSlide className="w-[100%] rounded-[22px] bg-gray-50">
-            <div className="flex">
-              <Image className="w-150" src={img3} alt="" />
-              <div className="mt-10">
-                <p className="text-4xl font-semibold mb-6 mr-40">
-                  Пардохтҳо ва интиқолҳо
-                </p>
-                <p className="pr-35 mb-8 text-[17px] text-zinc-500">
-                  ҶСК "Ориёнбонк" бо хушнудӣ ба шумо хидматҳо оид ба амалисозии
-                  интиқоли пулҳои байналмилалӣ, инчунин интиқолро дар дохили
-                  Тоҷикистон бидуни кушодани суратҳисоби ҷорӣ пешниҳод менамояд.
-                </p>
-                <button className="w-25 h-13 bg-amber-300 rounded-[12px]">
-                  Бештар
-                </button>
-              </div>
+          </div>
+        </SwiperSlide>
+        <SwiperSlide className="w-[100%] rounded-[22px] bg-gray-50">
+          <div className="flex">
+            <Image className="w-150" src={img3} alt="" />
+            <div className="mt-10">
+              <p className="text-4xl font-semibold mb-6 mr-40">
+                Пардохтҳо ва интиқолҳо
+              </p>
+              <p className="pr-35 mb-8 text-[17px] text-zinc-500">
+                ҶСК "Ориёнбонк" бо хушнудӣ ба шумо хидматҳо оид ба амалисозии
+                интиқоли пулҳои байналмилалӣ, инчунин интиқолро дар дохили
+                Тоҷикистон бидуни кушодани суратҳисоби ҷорӣ пешниҳод менамояд.
+              </p>
+              <button className="w-25 h-13 bg-amber-300 rounded-[12px]">
+                Бештар
+              </button>
             </div>
-          </SwiperSlide>
-        </Swiper>
-      </div>
+          </div>
+        </SwiperSlide>
+      </Swiper>
+    </div >
       <footer className="bg-white shadow-md rounded-xl p-8 mt-10">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between gap-8">
           <div className="flex-1 text-gray-500">
