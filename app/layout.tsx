@@ -2,6 +2,11 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Montserrat } from "next/font/google";
 import Navbar from "@/components/navbar";
+import img2 from "../public/auto_4x_2291718894.webp";
+import img1 from "../public/logo.a6a2c873.svg";
+import img3 from "../public/mt_4x_92d419464f.webp";
+import Link from "next/link"; 
+import Image from "next/image";
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -24,6 +29,52 @@ export default function RootLayout({
       <body className={montserrat.className}>
         <Navbar />
         {children}
+        <footer className="bg-white shadow-md rounded-xl p-8 mt-10">
+          <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between gap-8">
+            <div className="flex-1 text-gray-500">
+              <Image src={img1} alt="Logo" className="mb-4" />
+              <p className="text-gray-700 mb-2">
+                Ҷумҳурии Тоҷикистон, ш. Душанбе, <br />
+                хиёбони Рӯдакӣ 95/1 Ҳ/М: 20402972413691, <br />
+                РМА: 020003038, РЯМ: 350101369
+              </p>
+              <p className="text-gray-700">
+                Почтаи электронӣ:{" "}
+                <a
+                  href="mailto:info@Oriyonbonk.tj"
+                  className="text-blue-600 hover:underline"
+                >
+                  info@Oriyonbonk.tj
+                </a>
+              </p>
+            </div>
+
+            <div className="flex-1 text-gray-500">
+              <p className="font-semibold text-2xl mb-2 text-black">2222</p>
+              <p className="mb-2">Барои зангҳо дар дохили Тоҷикистон</p>
+              <p className="mb-2 text-2xl text-black font-semibold">
+                +992 (37) 221 05 68 <br />
+                +992 44 610 22 00
+              </p>
+              <p className="mb-2">Барои зангҳо аз ҳар гӯшаи ҷаҳон</p>
+              <p className="mb-2 text-2xl text-black font-semibold">
+                +992 44 600 15 20
+              </p>
+              <p>Телефони боварии Бонки миллии Тоҷикистон</p>
+            </div>
+
+            <div className="flex-1 text-gray-500">
+              <p className="font-semibold text-2xl mb-2 text-black">Вақти корӣ</p>
+              <p className="mb-2">
+                Рӯзҳои корӣ: душанбе - ҷумъа аз 08:00 то <br /> 17:00
+              </p>
+              <p className="mb-2">Шанбе: аз 09:00 то 12:00</p>
+              <p className="mb-2">Якшанбе рузи истироҳат</p>
+              <p>Қабули шаҳрвандон: ҳар рӯзи шанбе</p>
+            </div>
+          </div>
+        </footer>
+
       </body>
     </html>
   );

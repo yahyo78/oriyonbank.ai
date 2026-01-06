@@ -19,18 +19,8 @@ const Navbar = () => {
 
 
           <div className='flex gap-5'>
-            <Link href="/chat">
-              <button className="w-40 h-11 flex items-center justify-center gap-2 bg-amber-300 cursor-pointer rounded-[15px]">
-                <MessageCircleMore />
-                <h1>Онлайн чат </h1>
-              </button>
-            </Link>
-            <Link href="/calculyator">
-              <button className="w-40 h-11 flex items-center justify-center gap-2 bg-amber-300 cursor-pointer rounded-[15px]">
-                <Calculator />
-                <h1>Калькулятор </h1>
-              </button>
-            </Link>
+            
+            
           </div>
         </div>
       </div>

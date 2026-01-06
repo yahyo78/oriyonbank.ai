@@ -1,21 +1,104 @@
 "use client";
 
+import axios from "axios";
 import React, { useState } from "react";
+
+interface ApiResponse {
+  input: {
+    amount: number;
+    days: number;
+    early_day: number;
+  };
+  results: {
+    classic: {
+      type: string;
+      name: string;
+      rate_percent: number;
+      income: number;
+      total: number;
+    };
+    capitalization: {
+      type: string;
+      name: string;
+      rate_percent: number;
+      income: number;
+      total: number;
+    };
+    ladder: {
+      type: string;
+      name: string;
+      actual_days?: number;
+      rate_percent?: number;
+      income: number;
+      total: number;
+      note?: string;
+    };
+  };
+  recommendation: string;
+  diff_from_best: number;
+}
 
 export default function CalculatorPage() {
   const [amount, setAmount] = useState("");
+  const [early_day, setEarlyDay] = useState("");
   const [term, setTerm] = useState("");
   const [calculated, setCalculated] = useState(false);
+  const [apiData, setApiData] = useState<ApiResponse | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleCalculate = () => {
+  const formatNumber = (num: number): string => {
+    return num.toLocaleString("ru-RU", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+  };
+
+  const handleCalculate = async () => {
     if (!amount || !term) return;
-    setCalculated(true);
+
+    setLoading(true);
+    setError(null);
+
+    try {
+      const payload = {
+        amount: Number(amount),
+        days: Number(term),
+        early_day: Number(early_day) || 1,
+      };
+
+      console.log("SEND PAYLOAD:", payload);
+
+      const response = await axios.post<ApiResponse>(
+        "http://127.0.0.1:8000/api/calculate/",
+        payload,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      console.log("RESPONSE:", response.data);
+      setApiData(response.data);
+      setCalculated(true);
+    } catch (err: any) {
+      console.error("API ERROR:", err);
+      setError(
+        err.response?.data?.message || "Не удалось рассчитать. Пожалуйста, попробуйте еще раз."
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleReset = () => {
     setAmount("");
     setTerm("");
+    setEarlyDay("");
     setCalculated(false);
+    setApiData(null);
+    setError(null);
   };
 
   return (
@@ -46,106 +129,136 @@ export default function CalculatorPage() {
       `}</style>
       <div className="mt-20" style={styles.page}>
         <div style={styles.container}>
-        <div style={styles.header}>
-          <h1 style={styles.title}>Deposit Calculator</h1>
-          <p style={styles.subtitle}>
-            Calculate your potential earnings with different deposit options
-          </p>
-        </div>
+          <div style={styles.header}>
+            <h1 style={styles.title}>Калькулятор вкладов</h1>
+            <p style={styles.subtitle}>
+              Рассчитайте возможную прибыль от различных вариантов вкладов
+            </p>
+          </div>
 
-        <div style={styles.formCard}>
-          <div style={styles.form}>
-            <div style={styles.inputGroup}>
-              <label style={styles.label}>
-                <span style={styles.labelText}>Deposit Amount</span>
-                <div style={styles.inputWrapper}>
-                  <input
-                    type="number"
-                    placeholder="Enter amount"
-                    value={amount}
-                    onChange={(e) => setAmount(e.target.value)}
-                    style={styles.input}
-                    className="calc-input"
-                    min="0"
-                  />
-                  <span style={styles.currency}>сомони</span>
+          <div style={styles.formCard}>
+            <div style={styles.form}>
+              <div style={styles.inputGroup}>
+                <label style={styles.label}>
+                  <span style={styles.labelText}>Сумма вклада</span>
+                  <div style={styles.inputWrapper}>
+                    <input
+                      type="number"
+                      placeholder="100000 сомони"
+                      value={amount}
+                      onChange={(e) => setAmount(e.target.value)}
+                      style={styles.input}
+                      className="calc-input"
+                      min="0"
+                    />
+                    <span style={styles.currency}>сомони</span>
+                  </div>
+                </label>
+              </div>
+
+              <div style={styles.inputGroup}>
+                <label style={styles.label}>
+                  <span style={styles.labelText}>Срок (дни)</span>
+                  <div style={styles.inputWrapper}>
+                    <input
+                      type="number"
+                      placeholder="Введите дни (например, 90, 180, 365)"
+                      value={term}
+                      onChange={(e) => setTerm(e.target.value)}
+                      style={styles.input}
+                      className="calc-input"
+                      min="1"
+                    />
+                    <span style={styles.currency}>дней</span>
+                  </div>
+                </label>
+              </div>
+
+              <div style={styles.inputGroup}>
+                <label style={styles.label}>
+                  <span style={styles.labelText}>День досрочного снятия</span>
+                  <div style={styles.inputWrapper}>
+                    <input
+                      type="number"
+                      placeholder="10"
+                      value={early_day}
+                      onChange={(e) => setEarlyDay(e.target.value)}
+                      style={styles.input}
+                      className="calc-input"
+                      min="1"
+                    />
+                    <span style={styles.currency}>дней</span>
+                  </div>
+                </label>
+              </div>
+
+              {error && (
+                <div style={styles.errorMessage}>
+                  {error}
                 </div>
-              </label>
-            </div>
-
-            <div style={styles.inputGroup}>
-              <label style={styles.label}>
-                <span style={styles.labelText}>Term (Months)</span>
-                <div style={styles.inputWrapper}>
-                  <input
-                    type="number"
-                    placeholder="Enter term"
-                    value={term}
-                    onChange={(e) => setTerm(e.target.value)}
-                    style={styles.input}
-                    className="calc-input"
-                    min="1"
-                  />
-                  <span style={styles.currency}>months</span>
-                </div>
-              </label>
-            </div>
-
-            <div style={styles.buttonGroup}>
-              <button
-                onClick={handleCalculate}
-                style={{
-                  ...styles.button,
-                  ...styles.buttonPrimary,
-                  opacity: !amount || !term ? 0.6 : 1,
-                  cursor: !amount || !term ? "not-allowed" : "pointer",
-                }}
-                className="calc-button-primary"
-                disabled={!amount || !term}
-              >
-                Calculate
-              </button>
-              {calculated && (
-                <button
-                  onClick={handleReset}
-                  style={{ ...styles.button, ...styles.buttonSecondary }}
-                  className="calc-button-secondary"
-                >
-                  Reset
-                </button>
               )}
+
+              <div style={styles.buttonGroup}>
+                <button
+                  onClick={handleCalculate}
+                  style={{
+                    ...styles.button,
+                    ...styles.buttonPrimary,
+                    opacity: !amount || !term || loading ? 0.6 : 1,
+                    cursor: !amount || !term || loading ? "not-allowed" : "pointer",
+                  }}
+                  className="calc-button-primary"
+                  disabled={!amount || !term || loading}
+                >
+                  {loading ? "Расчет..." : "Рассчитать"}
+                </button>
+                {calculated && (
+                  <button
+                    onClick={handleReset}
+                    style={{ ...styles.button, ...styles.buttonSecondary }}
+                    className="calc-button-secondary"
+                  >
+                    Сбросить
+                  </button>
+                )}
+              </div>
             </div>
           </div>
-        </div>
 
-        {calculated && (
-          <div style={styles.resultsSection}>
-            <h2 style={styles.resultsTitle}>Calculation Results</h2>
-            <div style={styles.results}>
-              <ResultCard
-                title="Classic"
-                income="833 333 сомони"
-                total="1 833 333 сомони"
-                description="Simple interest deposit"
-              />
+          {calculated && apiData && (
+            <div style={styles.resultsSection}>
+              <h2 style={styles.resultsTitle}>Результаты расчета</h2>
+              <div style={styles.results}>
+                <ResultCard
+                  title={apiData.results.classic.name}
+                  income={`${formatNumber(apiData.results.classic.income)} сомони`}
+                  total={`${formatNumber(apiData.results.classic.total)} сомони`}
+                  rate={apiData.results.classic.rate_percent}
+                  description="Вклад с простыми процентами"
+                  recommended={apiData.recommendation === "classic"}
+                />
 
-              <ResultCard
-                title="Capitalization"
-                income="1 111 083 сомони"
-                total="2 111 083 сомони"
-                description="Compound interest deposit"
-                recommended
-              />
+                <ResultCard
+                  title={apiData.results.capitalization.name}
+                  income={`${formatNumber(apiData.results.capitalization.income)} сомони`}
+                  total={`${formatNumber(apiData.results.capitalization.total)} сомони`}
+                  rate={apiData.results.capitalization.rate_percent}
+                  description="Вклад с капитализацией"
+                  recommended={apiData.recommendation === "capitalization"}
+                />
 
-              <ResultCard
-                title="Ladder"
-                income="1 083 556 сомони"
-                total="2 083 556 сомони"
-                description="Flexible term deposit"
-              />
+                <ResultCard
+                  title={apiData.results.ladder.name}
+                  income={`${formatNumber(apiData.results.ladder.income)} сомони`}
+                  total={`${formatNumber(apiData.results.ladder.total)} сомони`}
+                  rate={apiData.results.ladder.rate_percent}
+                  description={apiData.results.ladder.note || "Гибкий вклад"}
+                  actualDays={apiData.results.ladder.actual_days}
+                  recommended={apiData.recommendation === "ladder"}
+                />
+              </div>
             </div>
-          </div>
-        )}
+          )}
         </div>
       </div>
     </>
@@ -156,13 +269,17 @@ function ResultCard({
   title,
   income,
   total,
+  rate,
   description,
+  actualDays,
   recommended = false,
 }: {
   title: string;
   income: string;
   total: string;
+  rate?: number;
   description?: string;
+  actualDays?: number;
   recommended?: boolean;
 }) {
   return (
@@ -176,21 +293,31 @@ function ResultCard({
       {recommended && (
         <div style={styles.badge}>
           <span style={styles.badgeIcon}>⭐</span>
-          Recommended
+          Рекомендуется
         </div>
       )}
       <div style={styles.cardHeader}>
-        <h3 style={styles.cardTitle}>{title}</h3>
+        <div style={styles.cardTitleRow}>
+          <h3 style={styles.cardTitle}>{title}</h3>
+          {rate !== undefined && (
+            <div style={styles.rateBadge}>
+              {rate}%
+            </div>
+          )}
+        </div>
         {description && <p style={styles.cardDescription}>{description}</p>}
+        {actualDays && (
+          <p style={styles.cardNote}>Фактические дни: {actualDays}</p>
+        )}
       </div>
       <div style={styles.cardContent}>
         <div style={styles.statItem}>
-          <span style={styles.statLabel}>Income</span>
+          <span style={styles.statLabel}>Доход</span>
           <span style={styles.statValue}>{income}</span>
         </div>
         <div style={styles.divider} />
         <div style={styles.statItem}>
-          <span style={styles.statLabel}>Total Amount</span>
+          <span style={styles.statLabel}>Общая сумма</span>
           <span style={{ ...styles.statValue, ...styles.statValueTotal }}>
             {total}
           </span>
@@ -222,7 +349,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     color: "#ffd230", // зард
     letterSpacing: "-0.5px",
   },
-  
+
   subtitle: {
     fontSize: "18px",
     color: "#6b7280",
@@ -362,17 +489,49 @@ const styles: { [key: string]: React.CSSProperties } = {
     paddingBottom: "20px",
     borderBottom: "1px solid #f3f4f6",
   },
+  cardTitleRow: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginBottom: "8px",
+    gap: "12px",
+  },
   cardTitle: {
     fontSize: "24px",
     fontWeight: 700,
     color: "#1f2937",
-    marginBottom: "8px",
+    margin: 0,
     letterSpacing: "-0.3px",
+    flex: 1,
+  },
+  rateBadge: {
+    backgroundColor: "#667eea",
+    color: "#ffffff",
+    padding: "6px 12px",
+    borderRadius: "8px",
+    fontSize: "14px",
+    fontWeight: 700,
+    whiteSpace: "nowrap",
   },
   cardDescription: {
     fontSize: "14px",
     color: "#6b7280",
-    margin: 0,
+    margin: "4px 0 0 0",
+  },
+  cardNote: {
+    fontSize: "12px",
+    color: "#9ca3af",
+    margin: "4px 0 0 0",
+    fontStyle: "italic",
+  },
+  errorMessage: {
+    backgroundColor: "#fee2e2",
+    color: "#dc2626",
+    padding: "12px 16px",
+    borderRadius: "8px",
+    fontSize: "14px",
+    fontWeight: 500,
+    border: "1px solid #fecaca",
   },
   cardContent: {
     display: "flex",

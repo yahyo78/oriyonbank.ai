@@ -1,18 +1,39 @@
 "use client";
+import './globals.css'
 import Image from "next/image";
-import img1 from "../public/logo.a6a2c873.svg";
-import { BookMarked, MailCheck, MapPin } from "lucide-react";
+import { BookMarked, MailCheck, MapPin, MessageCircle } from "lucide-react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import img2 from "../public/auto_4x_2291718894.webp";
+import img1 from "../public/logo.a6a2c873.svg";
 import img3 from "../public/mt_4x_92d419464f.webp";
+import Link from "next/link";
 import "swiper/css";
 import Navbar from "@/components/navbar";
-import Link from "next/link";
+import imageRobot from "../public/robot.png";
 import { Autoplay, Pagination, Navigation } from 'swiper/modules';
+import { useState, useRef } from "react";
+import ChatDrawer from "@/components/ChatDrawer";
+import CalculatorSection from "@/components/CalculatorSection";
+
 export default function Home() {
+  const [isChatOpen, setIsChatOpen] = useState(false);
+  const calculatorRef = useRef<HTMLDivElement>(null);
+
+  const handleAskQuestion = () => {
+    setIsChatOpen(true);
+  };
+
+  const handleCalculatorClick = () => {
+    calculatorRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+      inline: "end"
+    });
+  };
   return (
     <>
       <div className="w-[77%] m-auto mt-35 shadow-md shadow-gray-300 rounded-[22px]">
+
         <Swiper
           spaceBetween={30}
           centeredSlides={true}
@@ -27,89 +48,70 @@ export default function Home() {
           modules={[Autoplay, Pagination, Navigation]}
           className="mySwiper"
         >
-          <SwiperSlide className="w-[100%] rounded-[22px] bg-gray-50">
-            <div className="flex">
-              <Image className="w-150" src={img2} alt="" />
-              <div className="mt-20">
-                <p className="text-4xl font-semibold mb-8">Автоқарз</p>
-                <p className="pr-35 mb-8 text-[17px] text-zinc-500">
-                  Автоқарз қарзест, ки ниёзи Шуморо ба воситаи нақлиёт таъмин
-                  менамояд
+          <SwiperSlide className="bg-gray-50 rounded-[22px]">
+            <div className="flex items-center justify-between px-14 py-12 gap-12">
+
+              {/* LEFT – TEXT */}
+              <div className="max-w-xl pb-[100px]">
+                <h2 className="text-4xl font-bold mb-4 text-gray-900">
+                  Депозит и расчет прибыли
+                </h2>
+
+                <p className="text-gray-600 text-lg mb-8 leading-relaxed">
+                  С помощью нашего калькулятора вы можете заранее рассчитать возможную прибыль
+                  от вашего вклада и выбрать лучший тип вклада для себя.
                 </p>
-                <Link href="/chat">
-                  <button className="w-25 h-13 bg-amber-300 rounded-[12px]">
-                    Бештар
+
+                <div className="flex gap-4">
+                  <button
+                    onClick={handleCalculatorClick}
+                    className="px-8 py-3 bg-amber-300 hover:bg-amber-400 transition rounded-[14px] font-semibold"
+                  >
+                    Рассчитать
                   </button>
-                </Link>
+
+                  <button
+                    onClick={handleAskQuestion}
+                    className="px-8 py-3 border border-amber-300 text-amber-600 hover:bg-amber-50 transition rounded-[14px] font-semibold"
+                  >
+                    Задать вопрос
+                  </button>
+                </div>
+              </div>
+
+              {/* RIGHT – IMAGE */}
+              <div className="relative w-[580px] h-[380px] flex-shrink-0">
+                <Image
+                  src={imageRobot}
+                  alt="Deposit illustration"
+                  fill
+                  className="object-contain"
+                />
               </div>
             </div>
           </SwiperSlide>
-          <SwiperSlide className="w-[100%] rounded-[22px] bg-gray-50">
-            <div className="flex">
-              <Image className="w-150" src={img3} alt="" />
-              <div className="mt-10">
-                <p className="text-4xl font-semibold mb-6 mr-40">
-                  Пардохтҳо ва интиқолҳо
-                </p>
-                <p className="pr-35 mb-8 text-[17px] text-zinc-500">
-                  ҶСК "Ориёнбонк" бо хушнудӣ ба шумо хидматҳо оид ба амалисозии
-                  интиқоли пулҳои байналмилалӣ, инчунин интиқолро дар дохили
-                  Тоҷикистон бидуни кушодани суратҳисоби ҷорӣ пешниҳод менамояд.
-                </p>
-                <button className="w-25 h-13 bg-amber-300 rounded-[12px]">
-                  Бештар
-                </button>
-              </div>
-            </div>
-          </SwiperSlide>
+
+          {/* <SwiperSlide>Slide 2</SwiperSlide> */}
         </Swiper>
       </div >
 
-      <footer className="bg-white shadow-md rounded-xl p-8 mt-10">
-        <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between gap-8">
-          <div className="flex-1 text-gray-500">
-            <Image src={img1} alt="Logo" className="mb-4" />
-            <p className="text-gray-700 mb-2">
-              Ҷумҳурии Тоҷикистон, ш. Душанбе, <br />
-              хиёбони Рӯдакӣ 95/1 Ҳ/М: 20402972413691, <br />
-              РМА: 020003038, РЯМ: 350101369
-            </p>
-            <p className="text-gray-700">
-              Почтаи электронӣ:{" "}
-              <a
-                href="mailto:info@Oriyonbonk.tj"
-                className="text-blue-600 hover:underline"
-              >
-                info@Oriyonbonk.tj
-              </a>
-            </p>
-          </div>
 
-          <div className="flex-1 text-gray-500">
-            <p className="font-semibold text-2xl mb-2 text-black">2222</p>
-            <p className="mb-2">Барои зангҳо дар дохили Тоҷикистон</p>
-            <p className="mb-2 text-2xl text-black font-semibold">
-              +992 (37) 221 05 68 <br />
-              +992 44 610 22 00
-            </p>
-            <p className="mb-2">Барои зангҳо аз ҳар гӯшаи ҷаҳон</p>
-            <p className="mb-2 text-2xl text-black font-semibold">
-              +992 44 600 15 20
-            </p>
-            <p>Телефони боварии Бонки миллии Тоҷикистон</p>
-          </div>
-
-          <div className="flex-1 text-gray-500">
-            <p className="font-semibold text-2xl mb-2 text-black">Вақти корӣ</p>
-            <p className="mb-2">
-              Рӯзҳои корӣ: душанбе - ҷумъа аз 08:00 то <br /> 17:00
-            </p>
-            <p className="mb-2">Шанбе: аз 09:00 то 12:00</p>
-            <p className="mb-2">Якшанбе рузи истироҳат</p>
-            <p>Қабули шаҳрвандон: ҳар рӯзи шанбе</p>
-          </div>
+      {/* Calculator Section - Right Side */}
+      <div ref={calculatorRef} className="w-full mt-20 flex justify-center pr-4">
+        <div className="w-[85%] max-w-6xl">
+          <CalculatorSection />
         </div>
-      </footer>
+      </div>
+
+      <button
+        onClick={handleAskQuestion}
+        className="px-3 fixed bottom-10 right-10 py-3 bg-amber-300 hover:bg-amber-400 transition rounded-[50px] font-semibold"
+      >
+        <MessageCircle className="w-6 h-6" />
+      </button>
+
+      {/* Chat Drawer - No black overlay */}
+      <ChatDrawer isOpen={isChatOpen} onClose={() => setIsChatOpen(false)} />
     </>
   );
 }
