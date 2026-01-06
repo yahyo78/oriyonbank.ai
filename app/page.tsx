@@ -7,7 +7,6 @@ import img2 from "../public/auto_4x_2291718894.webp";
 import img1 from "../public/logo.a6a2c873.svg";
 import img3 from "../public/mt_4x_92d419464f.webp";
 import Link from "next/link";
-import "swiper/css";
 import Navbar from "@/components/navbar";
 import imageRobot from "../public/robot.png";
 import { Autoplay, Pagination, Navigation } from 'swiper/modules';
@@ -103,7 +102,7 @@ export default function Home() {
         </div>
       </div>
 
-      <button
+      <button title='message'
         onClick={handleAskQuestion}
         className="px-3 fixed bottom-10 right-10 py-3 bg-amber-300 hover:bg-amber-400 transition rounded-[50px] font-semibold"
       >
